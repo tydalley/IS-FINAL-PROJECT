@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ty's Racing Simulator </title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+```
+:root {
+  --navy: #0a5a7d;
+  --navy-dark: #123;
+  --blue: #0077b6;
+  --blue-light: #00a6c7;
+  --orange: #ff8c42;
+  --orange-light: #fff7ef;
+  --white: #ffffff;
+  --offwhite: rgba(255, 255, 255, 0.97);
+  --text: #123;
+  --muted: #25556f;
+  --border: rgba(0, 140, 180, 0.12);
+  --shadow: 0 10px 26px rgba(0, 53, 84, 0.10);
+  --card-bg: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(248,252,255,0.97));
+  --panel-bg: linear-gradient(180deg, #f3fbff, #fff7ef);
+  --car1: #0077b6;
+  --car2: #ff8c42;
+  --gold: #f5c518;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Arial", sans-serif;
+  background: linear-gradient(180deg, #fff6e9 0%, #e0f7ff 35%, #d7f0ff 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+header {
+background:
+linear-gradient(rgba(0, 82, 130, 0.42), rgba(255, 123, 0, 0.24)),
+url("images/app-background2.jpg") center/cover no-repeat;
+min-height: 52vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 60px 20px;
+text-align: center;
+}
+
+
+.hero-overlay {
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 36px 28px;
+  border-radius: 24px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+}
+
+header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 7vw, 76px);
+  letter-spacing: 2px;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.35);
+}
+
+header h1 span {
+  color: #ffd166;
+}
+
+.header-sub {
+  margin-top: 12px;
+  color: #f7fbff;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.nav-strip {
+  background: linear-gradient(90deg, #0077b6, #00a6c7, #ff8c42);
+  text-align: center;
+  padding: 22px 18px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.nav-strip a {
+  display: inline-block;
+  margin: 8px;
+  padding: 11px 18px;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #0b5677;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.nav-strip a:hover {
+  transform: translateY(-2px);
+  background-color: #ffffff;
+}
+
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 34px 18px 0;
+}
+
+.section {
+  max-width: 1040px;
+  margin: 0 auto 28px;
+  background: var(--card-bg);
+  padding: 34px;
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.section h2 {
+  color: var(--navy);
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 14px;
+}
+
+.section p {
+  line-height: 1.8;
+  font-size: 1.03rem;
+  color: var(--text);
+}
+
+.picks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.pick-tile {
+  background: linear-gradient(180deg, #f3fbff, #fff7ef);
+  border-radius: 18px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.pick-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.pick-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  color: var(--orange);
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.cars-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.car-card {
+  background: linear-gradient(180deg, #f3fbff, #fff7ef);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.car-card.left {
+  border-left: 6px solid var(--car1);
+}
+
+.car-card.right {
+  border-left: 6px solid var(--car2);
+}
+
+.car-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.car-card select {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #b9ddee;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.car-card.left select:focus {
+  border-color: var(--car1);
+}
+
+.car-card.right select:focus {
+  border-color: var(--car2);
+}
+
+.car-img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.car-img.visible {
+  display: block;
+}
+
+.car-stat-box {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  padding: 16px;
+  display: none;
+  border: 1px solid rgba(0, 140, 180, 0.10);
+}
+
+.car-stat-box.visible {
+  display: block;
+}
+
+.car-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--navy);
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.car-year {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.car-time {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 46px;
+  line-height: 1;
+  margin-top: 10px;
+  display: none;
+}
+
+.car-time.visible {
+  display: block;
+}
+
+.left .car-time {
+  color: var(--car1);
+}
+
+.right .car-time {
+  color: var(--car2);
+}
+
+.car-time span {
+  font-size: 15px;
+  font-family: "Trebuchet MS", "Arial", sans-serif;
+  color: var(--muted);
+}
+
+.vs-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 60px;
+}
+
+.vs-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  color: var(--navy);
+  letter-spacing: 2px;
+}
+
+.race-btn {
+  background: linear-gradient(90deg, #0077b6, #00a6c7);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  padding: 14px 26px;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.2s;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.race-btn:hover {
+  transform: translateY(-2px);
+}
+
+.race-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.track-section {
+  display: none;
+}
+
+.track-section.visible {
+  display: block;
+}
+
+.track-label {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.track {
+  background: linear-gradient(180deg, #f3fbff, #fff7ef);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.track-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.track-car-label {
+  width: 160px;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-bar-bg {
+  flex: 1;
+  height: 30px;
+  background: #dceff8;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.track-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  transition: width 0s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.track-bar-fill.blue {
+  background: linear-gradient(90deg, #0077b6, #00a6c7);
+}
+
+.track-bar-fill.orange {
+  background: linear-gradient(90deg, #ff8c42, #ffb36b);
+}
+
+.track-bar-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s;
+}
+
+.finish-flag {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.result-section {
+  display: none;
+}
+
+.result-section.visible {
+  display: block;
+}
+
+.result-card {
+  background: linear-gradient(180deg, #f3fbff, #fff7ef);
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.winner-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.winner-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(34px, 6vw, 58px);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.winner-time {
+  font-size: 16px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.win-message {
+  display: inline-block;
+  margin-top: 20px;
+  background: #fff7ef;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.stat-tile {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid rgba(0, 140, 180, 0.10);
+}
+
+.stat-tile-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.stat-tile-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  letter-spacing: 1px;
+}
+
+.stat-tile-val.c1 {
+  color: var(--car1);
+}
+
+.stat-tile-val.c2 {
+  color: var(--car2);
+}
+
+.stat-tile-val.gold {
+  color: #d48a00;
+}
+
+.tie-banner {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  color: var(--orange);
+  letter-spacing: 3px;
+}
+
+.bottom-links {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.bottom-links a {
+  color: #0b76a8;
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0 12px;
+}
+
+.bottom-links a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  text-align: center;
+  color: #25556f;
+  padding: 20px;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+  .picks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .car-img {
+    height: 180px;
+  }
+}
+
+@media (max-width: 700px) {
+  header {
+    min-height: 42vh;
+    padding: 44px 16px;
+  }
+
+  .hero-overlay {
+    padding: 28px 22px;
+  }
+
+  header h1 {
+    font-size: 2.4rem;
+  }
+
+  .section {
+    padding: 22px;
+  }
+
+  .cars-row {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-col {
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 0;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .track-car-label {
+    width: 100px;
+  }
+}
+```
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="hero-overlay">
+    <h1>Ty's <span>Dream Car</span> Matchups</h1>
+    <p class="header-sub">
+      Pick two cars, race them, and only reveal the numbers once it is go time.
+    </p>
+  </div>
+</header>
+
+<div class="nav-strip">
+  <a href="scratch.html">Back to Scratch Page</a>
+  <a href="index.html">Back to Professional Page</a>
+</div>
+
+<main>
+  <section class="section">
+    <h2>Why I Made This</h2>
+    <p>
+      I wanted this app to feel more personal than a generic car comparison page, so I picked some of my favorite cars to compare how fast they are!
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>My Picks</h2>
+    <div class="picks-grid">
+      <div class="pick-tile">
+        <div class="pick-label">Favorite Overall</div>
+        <div class="pick-value">911 Turbo S</div>
+      </div>
+      <div class="pick-tile">
+        <div class="pick-label">Craziest</div>
+        <div class="pick-value">Model S Plaid</div>
+      </div>
+      <div class="pick-tile">
+        <div class="pick-label">Car I'd Actually Drive</div>
+        <div class="pick-value">BMW M3 Competition</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Pick Two Cars</h2>
+
+```
+<div class="cars-row">
+  <div class="car-card left">
+    <p class="car-label">Car 1</p>
+    <select id="car1-select" onchange="updateCard(1)">
+      <option value="">— Select a car —</option>
+    </select>
+    <img id="car1-img" class="car-img" src="" alt="Car 1 image">
+    <div class="car-stat-box" id="car1-stats">
+      <div class="car-name" id="car1-name"></div>
+      <div class="car-year" id="car1-year"></div>
+      <div class="car-time" id="car1-time"><span>0–60 mph</span></div>
+    </div>
+  </div>
+
+  <div class="vs-col">
+    <div class="vs-badge">VS</div>
+    <button class="race-btn" id="race-btn" onclick="startRace()" disabled>Race It</button>
+  </div>
+
+  <div class="car-card right">
+    <p class="car-label">Car 2</p>
+    <select id="car2-select" onchange="updateCard(2)">
+      <option value="">— Select a car —</option>
+    </select>
+    <img id="car2-img" class="car-img" src="" alt="Car 2 image">
+    <div class="car-stat-box" id="car2-stats">
+      <div class="car-name" id="car2-name"></div>
+      <div class="car-year" id="car2-year"></div>
+      <div class="car-time" id="car2-time"><span>0–60 mph</span></div>
+    </div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <section class="section track-section" id="track-section">
+    <p class="track-label">Race Track</p>
+    <div class="track">
+      <div class="track-row">
+        <div class="track-car-label" id="track-label-1"></div>
+        <div class="track-bar-bg">
+          <div class="track-bar-fill blue" id="bar1">
+            <span class="track-bar-time" id="bar1-time"></span>
+          </div>
+        </div>
+        <div class="finish-flag">🏁</div>
+      </div>
+
+```
+  <div class="track-row">
+    <div class="track-car-label" id="track-label-2"></div>
+    <div class="track-bar-bg">
+      <div class="track-bar-fill orange" id="bar2">
+        <span class="track-bar-time" id="bar2-time"></span>
+      </div>
+    </div>
+    <div class="finish-flag">🏁</div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <section class="section result-section" id="result-section">
+    <div class="result-card" id="result-card"></div>
+  </section>
+
+  <div class="bottom-links">
+    <a href="scratch.html">Back to Scratch Page</a>
+    <a href="index.html">Back to Professional Page</a>
+  </div>
+</main>
+
+<footer>
+ Ty Dalley created this because what is better than surfing and cars!
+</footer>
+
+<script>
+  const CARS = [
+    { make:"Porsche", model:"911 Turbo S", year:2024, t:2.60, img:"images/porsche-911-turbo-s.jpg" },
+    { make:"Tesla", model:"Model S Plaid", year:2023, t:1.99, img:"images/tesla-model-s-plaid.jpg" },
+    { make:"Nissan", model:"GT-R Nismo", year:2022, t:2.90, img:"images/nissan-gtr-nismo.jpg" },
+    { make:"Chevrolet", model:"Corvette Z06", year:2024, t:2.60, img:"images/corvette-z06.jpg" },
+    { make:"Ford", model:"Mustang Shelby GT500", year:2024, t:3.30, img:"images/mustang-gt500.jpg" },
+    { make:"Toyota", model:"GR Supra", year:2024, t:3.90, img:"images/toyota-gr-supra.jpg" },
+    { make:"BMW", model:"M3 Competition xDrive", year:2024, t:3.40, img:"images/bmw-m3-competition.jpg" },
+    { make:"Audi", model:"R8 V10 Performance", year:2023, t:3.10, img:"images/audi-r8.jpg" },
+    { make:"Ford", model:"F-150 Raptor R", year:2024, t:5.20, img:"images/ford-raptor-r.jpg" },
+    { make:"Toyota", model:"Tacoma TRD Pro", year:2024, t:6.90, img:"images/toyota-tacoma-trd-pro.jpg" }
+  ];
+
+  CARS.sort((a, b) => a.t - b.t);
+
+  function populateSelects() {
+    const sel1 = document.getElementById('car1-select');
+    const sel2 = document.getElementById('car2-select');
+
+    CARS.forEach((car, i) => {
+      const label = `${car.make} ${car.model}`;
+      sel1.appendChild(new Option(label, i));
+      sel2.appendChild(new Option(label, i));
+    });
+  }
+
+  function hidePreRaceTimes() {
+    document.getElementById('car1-time').classList.remove('visible');
+    document.getElementById('car2-time').classList.remove('visible');
+  }
+
+  function updateCard(num) {
+    const sel = document.getElementById(`car${num}-select`);
+    const stats = document.getElementById(`car${num}-stats`);
+    const imgEl = document.getElementById(`car${num}-img`);
+    const timeEl = document.getElementById(`car${num}-time`);
+    const idx = sel.value;
+
+    if (idx === '') {
+      stats.classList.remove('visible');
+      imgEl.classList.remove('visible');
+      imgEl.src = '';
+      timeEl.classList.remove('visible');
+      checkBtn();
+      return;
+    }
+
+    const car = CARS[idx];
+
+    document.getElementById(`car${num}-name`).textContent = `${car.make} ${car.model}`;
+    document.getElementById(`car${num}-year`).textContent = `${car.year} model year`;
+    timeEl.innerHTML = `${car.t.toFixed(2)}<span>s &nbsp;0–60 mph</span>`;
+    timeEl.classList.remove('visible');
+
+    imgEl.src = car.img;
+    imgEl.alt = `${car.make} ${car.model}`;
+    imgEl.classList.add('visible');
+
+    stats.classList.add('visible');
+    checkBtn();
+  }
+
+  function checkBtn() {
+    const v1 = document.getElementById('car1-select').value;
+    const v2 = document.getElementById('car2-select').value;
+    document.getElementById('race-btn').disabled = (v1 === '' || v2 === '');
+  }
+
+  const WIN_MESSAGES = {
+    crushing: ["Absolutely dusted it", "Not even close", "Left it behind", "Walked away with it"],
+    clear: ["Clear win", "Handled business", "Pretty convincing", "That one had it"],
+    close: ["Barely got it", "Photo finish vibes", "Super close", "That was tight"],
+    tie: ["Dead heat", "Same exact pace", "Too close to split", "Basically twins"]
+  };
+
+  function getMessage(diff) {
+    if (diff < 0.001) return rnd(WIN_MESSAGES.tie);
+    if (diff >= 1.5) return rnd(WIN_MESSAGES.crushing);
+    if (diff >= 0.6) return rnd(WIN_MESSAGES.clear);
+    return rnd(WIN_MESSAGES.close);
+  }
+
+  function rnd(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function startRace() {
+    const i1 = parseInt(document.getElementById('car1-select').value);
+    const i2 = parseInt(document.getElementById('car2-select').value);
+    const c1 = CARS[i1];
+    const c2 = CARS[i2];
+
+    document.getElementById('race-btn').disabled = true;
+
+    const b1 = document.getElementById('bar1');
+    const b2 = document.getElementById('bar2');
+    const bt1 = document.getElementById('bar1-time');
+    const bt2 = document.getElementById('bar2-time');
+
+    b1.style.transition = 'none';
+    b1.style.width = '0%';
+    bt1.style.opacity = 0;
+
+    b2.style.transition = 'none';
+    b2.style.width = '0%';
+    bt2.style.opacity = 0;
+
+    document.getElementById('result-section').classList.remove('visible');
+    document.getElementById('track-label-1').textContent = `${c1.make} ${c1.model}`;
+    document.getElementById('track-label-2').textContent = `${c2.make} ${c2.model}`;
+
+    const trackSection = document.getElementById('track-section');
+    trackSection.classList.add('visible');
+    trackSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    const slower = Math.max(c1.t, c2.t);
+    const faster = Math.min(c1.t, c2.t);
+    const raceDuration = 1800;
+
+    const pct1 = (faster / c1.t) * 100;
+    const pct2 = (faster / c2.t) * 100;
+
+    setTimeout(() => {
+      b1.style.transition = `width ${(c1.t / slower) * raceDuration}ms cubic-bezier(0.4,0,0.6,1)`;
+      b2.style.transition = `width ${(c2.t / slower) * raceDuration}ms cubic-bezier(0.4,0,0.6,1)`;
+      b1.style.width = pct1 + '%';
+      b2.style.width = pct2 + '%';
+      bt1.textContent = c1.t.toFixed(2) + 's';
+      bt2.textContent = c2.t.toFixed(2) + 's';
+      bt1.style.opacity = 1;
+      bt2.style.opacity = 1;
+    }, 100);
+
+    setTimeout(() => {
+      document.getElementById('car1-time').classList.add('visible');
+      document.getElementById('car2-time').classList.add('visible');
+      showResult(c1, c2);
+    }, raceDuration + 400);
+  }
+
+  function showResult(c1, c2) {
+    const diff = Math.abs(c1.t - c2.t);
+    const isTie = diff < 0.001;
+    const winner = c1.t < c2.t ? c1 : (c2.t < c1.t ? c2 : null);
+    const loser = winner === c1 ? c2 : c1;
+    const winColor = winner === c1 ? 'var(--car1)' : 'var(--car2)';
+
+    let html = '';
+
+    if (isTie) {
+      html = `
+        <p class="winner-label">It's a Tie</p>
+        <div class="tie-banner">Dead Heat</div>
+        <div class="win-message">${getMessage(0)}</div>
+        <div class="stats-grid">
+          <div class="stat-tile"><div class="stat-tile-label">Car 1</div><div class="stat-tile-val c1">${c1.t.toFixed(2)}s</div></div>
+          <div class="stat-tile"><div class="stat-tile-label">Difference</div><div class="stat-tile-val gold">0.00s</div></div>
+          <div class="stat-tile"><div class="stat-tile-label">Car 2</div><div class="stat-tile-val c2">${c2.t.toFixed(2)}s</div></div>
+        </div>
+      `;
+    } else {
+      html = `
+        <p class="winner-label">Winner</p>
+        <div class="winner-name" style="color:${winColor}">${winner.make} ${winner.model}</div>
+        <div class="winner-time">${winner.year} · 0–60 in ${winner.t.toFixed(2)}s</div>
+        <div class="win-message">${getMessage(diff)}</div>
+        <div class="stats-grid">
+          <div class="stat-tile">
+            <div class="stat-tile-label">${c1.make} ${c1.model}</div>
+            <div class="stat-tile-val c1">${c1.t.toFixed(2)}s</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-label">Time Delta</div>
+            <div class="stat-tile-val gold">+${diff.toFixed(2)}s</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-label">${c2.make} ${c2.model}</div>
+            <div class="stat-tile-val c2">${c2.t.toFixed(2)}s</div>
+          </div>
+        </div>
+        <p style="margin-top:16px;font-size:13px;color:#25556f;">
+          The ${loser.make} ${loser.model} finished ${diff.toFixed(2)} seconds behind.
+        </p>
+      `;
+    }
+
+    const rs = document.getElementById('result-section');
+    document.getElementById('result-card').innerHTML = html;
+    rs.classList.add('visible');
+    rs.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('race-btn').disabled = false;
+  }
+
+  populateSelects();
+  hidePreRaceTimes();
+</script>
+
+</body>
+</html>
